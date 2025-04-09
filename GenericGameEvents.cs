@@ -80,32 +80,28 @@ namespace MysticsRisky2Utils
                 int executionEffectPosition = 11;
                 int forceExecutionPosition = 9;
                 if (c.TryGotoNext(
-                    MoveType.AfterLabel,
-                    x => x.MatchLdarg(1),
-                    x => x.MatchLdfld<DamageInfo>("damageType"),
-                    x => x.MatchLdcI4(2)) && c.TryGotoNext(
+                    x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damageType)),
+                    x => x.MatchLdcI4(2)
+                ) && c.TryGotoNext(
                     x => x.MatchCgtUn(),
                     x => x.MatchStloc(out bypassArmorFlagPosition)
                 ) && c.TryGotoNext(
-                    MoveType.AfterLabel,
-                    x => x.MatchLdarg(1),
-                    x => x.MatchLdfld<DamageInfo>("damage"),
+                    x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage)),
                     x => x.MatchStloc(out damagePosition)
                 ))
                 {
                     if (c.TryGotoNext(
                         MoveType.AfterLabel,
-                        x => x.MatchLdarg(1),
-                        x => x.MatchLdfld<DamageInfo>("crit"),
+                        x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.crit)),
                         x => x.MatchBrfalse(out _)
                     ))
                     {
                         c.Emit(OpCodes.Ldarg_0);
                         c.Emit(OpCodes.Ldarg_1);
-                        c.Emit(OpCodes.Ldloc_1);
                         c.Emit(OpCodes.Ldloc, damagePosition);
-                        c.EmitDelegate<System.Func<HealthComponent, DamageInfo, CharacterBody, float, float>>((healthComponent, damageInfo, attackerBody, damage) =>
+                        c.EmitDelegate<System.Func<HealthComponent, DamageInfo, float, float>>((healthComponent, damageInfo, damage) =>
                         {
+                            CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                             CharacterBody victimBody = healthComponent.body;
                             GenericCharacterInfo attackerInfo = new GenericCharacterInfo(attackerBody);
                             GenericCharacterInfo victimInfo = new GenericCharacterInfo(victimBody);
@@ -123,10 +119,10 @@ namespace MysticsRisky2Utils
                     {
                         c.Emit(OpCodes.Ldarg_0);
                         c.Emit(OpCodes.Ldarg_1);
-                        c.Emit(OpCodes.Ldloc_1);
                         c.Emit(OpCodes.Ldloc, damagePosition);
-                        c.EmitDelegate<System.Func<HealthComponent, DamageInfo, CharacterBody, float, float>>((healthComponent, damageInfo, attackerBody, damage) =>
+                        c.EmitDelegate<System.Func<HealthComponent, DamageInfo, float, float>>((healthComponent, damageInfo, damage) =>
                         {
+                            CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                             CharacterBody victimBody = healthComponent.body;
                             GenericCharacterInfo attackerInfo = new GenericCharacterInfo(attackerBody);
                             GenericCharacterInfo victimInfo = new GenericCharacterInfo(victimBody);
@@ -152,10 +148,10 @@ namespace MysticsRisky2Utils
                     {
                         c.Emit(OpCodes.Ldarg_0);
                         c.Emit(OpCodes.Ldarg_1);
-                        c.Emit(OpCodes.Ldloc_1);
                         c.Emit(OpCodes.Ldloc, damagePosition);
-                        c.EmitDelegate<System.Func<HealthComponent, DamageInfo, CharacterBody, float, float>>((healthComponent, damageInfo, attackerBody, damage) =>
+                        c.EmitDelegate<System.Func<HealthComponent, DamageInfo, float, float>>((healthComponent, damageInfo, damage) =>
                         {
+                            CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                             CharacterBody victimBody = healthComponent.body;
                             GenericCharacterInfo attackerInfo = new GenericCharacterInfo(attackerBody);
                             GenericCharacterInfo victimInfo = new GenericCharacterInfo(victimBody);
@@ -195,7 +191,6 @@ namespace MysticsRisky2Utils
                         c.MoveAfterLabels();
                         c.Emit(OpCodes.Ldarg_0);
                         c.Emit(OpCodes.Ldarg_1);
-                        c.Emit(OpCodes.Ldloc_1);
                         c.Emit(OpCodes.Ldloc, damagePosition);
                         c.Emit(OpCodes.Ldloc, executionThresholdPosition);
                         c.Emit(OpCodes.Ldloc, executionEffectPosition);
@@ -203,12 +198,13 @@ namespace MysticsRisky2Utils
                         float newExecutionThreshold = 0f;
                         GameObject newExecutionEffectPrefab = null;
                         bool newForceExecution = false;
-                        c.EmitDelegate<System.Action<HealthComponent, DamageInfo, CharacterBody, float, float, GameObject, bool>>((healthComponent, damageInfo, attackerBody, damage, executionThreshold, executionEffectPrefab, forceExecution) =>
+                        c.EmitDelegate<System.Action<HealthComponent, DamageInfo, float, float, GameObject, bool>>((healthComponent, damageInfo, damage, executionThreshold, executionEffectPrefab, forceExecution) =>
                         {
                             newExecutionThreshold = executionThreshold;
                             newExecutionEffectPrefab = executionEffectPrefab;
                             newForceExecution = forceExecution;
 
+                            CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                             CharacterBody victimBody = healthComponent.body;
                             GenericCharacterInfo attackerInfo = new GenericCharacterInfo(attackerBody);
                             GenericCharacterInfo victimInfo = new GenericCharacterInfo(victimBody);
