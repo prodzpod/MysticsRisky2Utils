@@ -1,3 +1,7 @@
+#### 2.0.23
+* fixed elite tier for risingtides and elitevariety
+#### 2.0.22
+* fixed for AC
 #### 2.0.21
 * fixed for sots 2.0
 #### 2.0.20

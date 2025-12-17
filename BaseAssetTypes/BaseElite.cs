@@ -165,16 +165,17 @@ namespace MysticsRisky2Utils.BaseAssetTypes
                 switch (customElite.vanillaTier)
                 {
                     case 1:
-                        HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[1].eliteTypes, customElite.eliteDef);
-                        HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[4].eliteTypes, customElite.eliteDef);
+                        HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[(int)R2API.VanillaEliteTier.BaseTier1].eliteTypes, customElite.eliteDef);
+                        HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[(int)R2API.VanillaEliteTier.FullTier1].eliteTypes, customElite.eliteDef);
                         break;
                     case 2:
-                        HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[5].eliteTypes, customElite.eliteDef);
+                        HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[(int)R2API.VanillaEliteTier.Tier2].eliteTypes, customElite.eliteDef);
                         break;
                 }
-                if (customElite.isHonor)
+                if (customElite.isHonor && customElite.vanillaTier == 1)
                 {
-                    HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[3].eliteTypes, customElite.eliteDef);
+                    HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[(int)R2API.VanillaEliteTier.BaseTier1Honor].eliteTypes, customElite.eliteDef);
+                    HG.ArrayUtils.ArrayAppend(ref R2API.EliteAPI.VanillaEliteTiers[(int)R2API.VanillaEliteTier.FullTier1Honor].eliteTypes, customElite.eliteDef);
                 }
             }
         }
